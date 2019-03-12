@@ -9,6 +9,9 @@ config :ticket_api, TicketApiWeb.Endpoint,
 # Print only warnings and errors during test
 config :logger, level: :warn
 
+# Faster tests due to less secure hasing
+config :bcrypt_elixir, :log_rounds, 4
+
 # Configure your database
 config :ticket_api, TicketApi.Repo,
   username: "mpiwek",
