@@ -6,6 +6,7 @@
                              phoenix_ecto]},
               {description,"ticket_api"},
               {modules,['Elixir.TicketApi','Elixir.TicketApi.Application',
+                        'Elixir.TicketApi.Auth','Elixir.TicketApi.Auth.User',
                         'Elixir.TicketApi.DataCase','Elixir.TicketApi.Repo',
                         'Elixir.TicketApiWeb',
                         'Elixir.TicketApiWeb.ChannelCase',
