@@ -11,8 +11,8 @@ config :logger, level: :warn
 
 # Configure your database
 config :ticket_api, TicketApi.Repo,
-  username: "mpiwek",
-  password: "piwek",
+  username: "postgres",
+  password: "postgres",
   database: "ticket_api_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox

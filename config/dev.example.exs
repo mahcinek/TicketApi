@@ -49,8 +49,8 @@ config :phoenix, :plug_init_mode, :runtime
 
 # Configure your database
 config :ticket_api, TicketApi.Repo,
-  username: "mpiwek",
-  password: "piwek",
+  username: "postgres",
+  password: "postgres",
   database: "ticket_api_dev",
   hostname: "localhost",
   pool_size: 10
