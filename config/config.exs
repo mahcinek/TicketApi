@@ -25,6 +25,11 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# Guardian config, for ease of verification secret is visible but should be hidden in env variable
+config :ticket_api, MyApi.Guardian,
+       issuer: "TicketApi",
+       secret_key: "xPqFkVYs+rR0ex9R3LOemGEKofHuoCQx6knk28W0VtlZ+dZJscVsqtQ41XNPMwGW"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

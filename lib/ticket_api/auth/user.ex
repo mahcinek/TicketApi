@@ -6,6 +6,7 @@ defmodule TicketApi.Auth.User do
   schema "users" do
     field :email, :string
     field :password, :string, virtual: true
+    field :password_confirmation, :string, virtual: true
     field :password_hash, :string
     field :first_name, :string
     field :is_active, :boolean, default: false
@@ -18,8 +19,10 @@ defmodule TicketApi.Auth.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :is_active, :first_name, :last_name, :phone_number, :password])
-    |> validate_required([:email, :is_active, :first_name, :last_name, :password])
+    |> cast(attrs, [:email, :is_active, :first_name, :last_name, :phone_number, :password, :password_confirmation])
+    |> validate_required([:email, :is_active, :first_name, :last_name, :password, :password_confirmation])
+    |> validate_format(:email, ~r/@/)
+    |> validate_confirmation(:password)
     |> unique_constraint(:email)
     |> put_password_hash()
   end

@@ -6,9 +6,9 @@ defmodule TicketApi.AuthTest do
   describe "users" do
     alias TicketApi.Auth.User
 
-    @valid_attrs %{email: "some email", password: "otohaslo123", first_name: "some first_name", is_active: true, last_name: "some last_name", phone_number: "some phone_number"}
-    @update_attrs %{email: "some updated email", password: "updateotohaslo123", first_name: "some updated first_name", is_active: false, last_name: "some updated last_name", phone_number: "some updated phone_number"}
-    @invalid_attrs %{email: nil, password: nil, first_name: nil, is_active: nil, last_name: nil, phone_number: nil}
+    @valid_attrs %{email: "some@email.pl", password: "otohaslo123", password_confirmation: "otohaslo123", first_name: "some first_name", is_active: true, last_name: "some last_name", phone_number: "some phone_number"}
+    @update_attrs %{email: "someupdated@email.pl", password: "updateotohaslo123", password_confirmation: "updateotohaslo123", first_name: "some updated first_name", is_active: false, last_name: "some updated last_name", phone_number: "some updated phone_number"}
+    @invalid_attrs %{email: nil, password: nil, password_confirmation: nil, first_name: nil, is_active: nil, last_name: nil, phone_number: nil}
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
@@ -21,17 +21,17 @@ defmodule TicketApi.AuthTest do
 
     test "list_users/0 returns all users" do
       user = user_fixture()
-      assert Auth.list_users() == [%User{user | password: nil}]
+      assert Auth.list_users() == [%User{user | password: nil, password_confirmation: nil}]
     end
 
     test "get_user!/1 returns the user with given id" do
       user = user_fixture()
-      assert Auth.get_user!(user.id) == %User{user | password: nil}
+      assert Auth.get_user!(user.id) == %User{user | password: nil, password_confirmation: nil }
     end
 
     test "create_user/1 with valid data creates a user" do
       assert {:ok, %User{} = user} = Auth.create_user(@valid_attrs)
-      assert user.email == "some email"
+      assert user.email == "some@email.pl"
       assert user.first_name == "some first_name"
       assert user.is_active == true
       assert user.last_name == "some last_name"
@@ -46,7 +46,7 @@ defmodule TicketApi.AuthTest do
     test "update_user/2 with valid data updates the user" do
       user = user_fixture()
       assert {:ok, %User{} = user} = Auth.update_user(user, @update_attrs)
-      assert user.email == "some updated email"
+      assert user.email == "someupdated@email.pl"
       assert user.first_name == "some updated first_name"
       assert user.is_active == false
       assert user.last_name == "some updated last_name"
@@ -57,7 +57,7 @@ defmodule TicketApi.AuthTest do
     test "update_user/2 with invalid data returns error changeset" do
       user = user_fixture()
       assert {:error, %Ecto.Changeset{}} = Auth.update_user(user, @invalid_attrs)
-      assert %User{user | password: nil} == Auth.get_user!(user.id)
+      assert %User{user | password: nil, password_confirmation: nil} == Auth.get_user!(user.id)
       assert Bcrypt.verify_pass("otohaslo123", user.password_hash)
     end
 
