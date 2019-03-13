@@ -17,6 +17,7 @@ defmodule TicketApiWeb.Router do
   scope "/api/v1", TicketApiWeb do
     pipe_through :api
     resources "/users", UserController, only: [:create]
+    resources "/events", EventController, only: [:index, :show]
   end
 
   pipeline :jwt_authenticated do

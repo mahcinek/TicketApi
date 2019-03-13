@@ -66,11 +66,6 @@ defmodule TicketApiWeb.UserControllerTest do
     end
   end
 
-  defp create_user(_) do
-    user = fixture(:user)
-    {:ok, user: user}
-  end
-
   defp setup_auth %{conn: conn} do
     user = fixture(:user)
     {:ok, jwt} = Auth.create_token(user)

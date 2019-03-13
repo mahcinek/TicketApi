@@ -21,6 +21,11 @@ defmodule TicketApi.Ev do
     Repo.all(Event)
   end
 
+  def list_events_with_tickets_avabile do
+    Repo.all(Event)
+    |> Repo.preload([ticket_counts: [:ticket_type]])
+  end
+
   @doc """
   Gets a single event.
 
