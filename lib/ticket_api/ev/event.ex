@@ -7,6 +7,8 @@ defmodule TicketApi.Ev.Event do
     field :adress, :string
     field :name, :string
     field :start_at, :utc_datetime
+    has_many :ticket_counts, TicketApi.Tc.TicketCount
+    has_many :tickets, TicketApi.Tick.Ticket
 
     timestamps()
   end

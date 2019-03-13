@@ -6,8 +6,10 @@ defmodule TicketApi.Tc.TicketCount do
   schema "ticket_counts" do
     field :max_size, :integer
     field :size_left, :integer
-    field :event_id, :id
-    field :ticket_type_id, :id
+    # field :event_id, :id
+    # field :ticket_type_id, :id
+    belongs_to :ticket_type, TicketApi.Tt.TicketType, foreign_key: :ticket_type_id
+    belongs_to :event, TicketApi.Ev.Event, foreign_key: :event_id
 
     timestamps()
   end

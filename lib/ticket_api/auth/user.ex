@@ -12,6 +12,7 @@ defmodule TicketApi.Auth.User do
     field :is_active, :boolean, default: false
     field :last_name, :string
     field :phone_number, :string
+    has_many :tickets, TicketApi.Tick.Ticket
 
     timestamps()
   end
