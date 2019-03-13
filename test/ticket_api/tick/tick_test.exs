@@ -35,7 +35,6 @@ defmodule TicketApi.TickTest do
       assert ticket.last_name == "some last_name"
       assert ticket.only_reserved == true
       assert ticket.paid == true
-      assert ticket.reservation_code == "some reservation_code"
     end
 
     test "create_ticket/1 with invalid data returns error changeset" do
@@ -49,7 +48,6 @@ defmodule TicketApi.TickTest do
       assert ticket.last_name == "some updated last_name"
       assert ticket.only_reserved == false
       assert ticket.paid == false
-      assert ticket.reservation_code == "some updated reservation_code"
     end
 
     test "update_ticket/2 with invalid data returns error changeset" do

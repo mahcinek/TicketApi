@@ -11,6 +11,7 @@ defmodule TicketApiWeb.Router do
     resources "/users", UserController, only: [:delete, :show]
     patch "/users", UserController, :update
     put "/users", UserController, :update
+    resources "/tickets", TicketController, only: [:index, :create, :show, :update]
   end
 
   scope "/api/v1", TicketApiWeb do

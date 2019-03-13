@@ -8,6 +8,7 @@ defmodule TicketApi.Auth do
 
   alias TicketApi.Auth.User
   alias TicketApi.Guardian
+  alias TicketApi.Tick.Ticket
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
 
     @doc """
@@ -149,6 +150,23 @@ defmodule TicketApi.Auth do
   """
   def change_user(%User{} = user) do
     User.changeset(user, %{})
+  end
+
+  def get_ticket(user, ticket_id) do
+    u_id = user.id
+    query = from t in Ticket, where: t.user_id == ^u_id and t.id == ^ticket_id
+    case Repo.one(query) do
+      nil ->
+        {:error, :not_found}
+      ticket ->
+        {:ok, ticket: ticket}
+    end
+  end
+
+  def list_tickets(user) do
+    u_id = user.id
+    query = from t in Ticket, where: t.user_id == ^u_id
+    Repo.all(query)
   end
 
   defp verify_password(password, %User{} = user) when is_binary(password) do

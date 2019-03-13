@@ -14,4 +14,21 @@ defmodule TicketApi.Factory do
     }
   end
 
+  def ticket_factory do
+    %TicketApi.Tick.Ticket{
+      first_name: "some updated first_name",
+      last_name: "some updated last_name",
+      event: build(:event),
+      user: build(:user)
+    }
+  end
+
+  def event_factory do
+    %TicketApi.Ev.Event{
+      name: "event",
+      start_at: ~N[2010-04-17 14:00:00],
+      adress: "adress"
+    }
+  end
+
 end
