@@ -13,6 +13,7 @@ defmodule TicketApi.Auth.User do
     field :last_name, :string
     field :phone_number, :string
     has_many :tickets, TicketApi.Tick.Ticket
+    has_many :payments, TicketApi.Pay.Payment
 
     timestamps()
   end

@@ -12,6 +12,7 @@ defmodule TicketApi.Tick.Ticket do
     belongs_to :ticket_type, TicketApi.Tt.TicketType, foreign_key: :ticket_type_id
     belongs_to :event, TicketApi.Ev.Event, foreign_key: :event_id
     belongs_to :user, TicketApi.Auth.User, foreign_key: :user_id
+    has_one :payment, TicketApi.Pay.Payment
 
     timestamps()
   end
