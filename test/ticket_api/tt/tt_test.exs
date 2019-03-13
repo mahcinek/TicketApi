@@ -6,8 +6,8 @@ defmodule TicketApi.TtTest do
   describe "ticket_types" do
     alias TicketApi.Tt.TicketType
 
-    @valid_attrs %{name: "some name", t_type: "some t_type"}
-    @update_attrs %{name: "some updated name", t_type: "some updated t_type"}
+    @valid_attrs %{name: "some name", t_type: "altogether"}
+    @update_attrs %{name: "some updated name", t_type: "multiple"}
     @invalid_attrs %{name: nil, t_type: nil}
 
     def ticket_type_fixture(attrs \\ %{}) do
@@ -32,7 +32,7 @@ defmodule TicketApi.TtTest do
     test "create_ticket_type/1 with valid data creates a ticket_type" do
       assert {:ok, %TicketType{} = ticket_type} = Tt.create_ticket_type(@valid_attrs)
       assert ticket_type.name == "some name"
-      assert ticket_type.t_type == "some t_type"
+      assert ticket_type.t_type == "altogether"
     end
 
     test "create_ticket_type/1 with invalid data returns error changeset" do
@@ -43,7 +43,7 @@ defmodule TicketApi.TtTest do
       ticket_type = ticket_type_fixture()
       assert {:ok, %TicketType{} = ticket_type} = Tt.update_ticket_type(ticket_type, @update_attrs)
       assert ticket_type.name == "some updated name"
-      assert ticket_type.t_type == "some updated t_type"
+      assert ticket_type.t_type == "multiple"
     end
 
     test "update_ticket_type/2 with invalid data returns error changeset" do

@@ -17,5 +17,6 @@ defmodule TicketApi.Tt.TicketType do
     ticket_type
     |> cast(attrs, [:name, :t_type])
     |> validate_required([:name, :t_type])
+    |> validate_inclusion(:t_type, ["multiple", "altogether", "avoid_one"])
   end
 end

@@ -1,7 +1,6 @@
 defmodule TicketApiWeb.TicketControllerTest do
   use TicketApiWeb.ConnCase
 
-  alias TicketApi.Tick
   alias TicketApi.Auth
   alias TicketApi.Tick.Ticket
   import TicketApi.Factory
@@ -22,6 +21,14 @@ defmodule TicketApiWeb.TicketControllerTest do
     test "lists all tickets", %{conn: conn} do
       conn = get(conn, Routes.ticket_path(conn, :index))
       assert json_response(conn, 200)["data"] !== []
+    end
+  end
+
+  describe "create" do
+    setup [:setup_auth_no_ticket]
+    test "Reserve ticket", %{conn: conn} do
+      conn = post(conn, Routes.ticket_path(conn, :create), ticket: @create_attrs)
+      assert json_response(conn, 201)["data"] !== []
     end
   end
 
