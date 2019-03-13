@@ -8,10 +8,14 @@ defmodule TicketApiWeb.Router do
 
   scope "/api/v1", TicketApiWeb do
     pipe_through [:api, :jwt_authenticated]
+    resources "/users", UserController, only: [:delete, :show]
+    patch "/users", UserController, :update
+    put "/users", UserController, :update
   end
 
   scope "/api/v1", TicketApiWeb do
     pipe_through :api
+    resources "/users", UserController, only: [:create]
   end
 
   pipeline :jwt_authenticated do

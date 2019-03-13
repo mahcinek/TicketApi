@@ -26,7 +26,7 @@ config :logger, :console,
 config :phoenix, :json_library, Jason
 
 # Guardian config, for ease of verification secret is visible but should be hidden in env variable
-config :ticket_api, MyApi.Guardian,
+config :ticket_api, TicketApi.Guardian,
        issuer: "TicketApi",
        secret_key: "xPqFkVYs+rR0ex9R3LOemGEKofHuoCQx6knk28W0VtlZ+dZJscVsqtQ41XNPMwGW"
 

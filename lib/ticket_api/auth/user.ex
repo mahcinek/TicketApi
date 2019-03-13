@@ -31,7 +31,7 @@ defmodule TicketApi.Auth.User do
   defp put_password_hash(
          %Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset
        ) do
-    change(changeset, password_hash: Bcrypt.hash_pwd_salt(password))
+    change(changeset, %{password_hash: Bcrypt.hash_pwd_salt(password), password: nil, password_confirmation: nil})
   end
 
   defp put_password_hash(changeset) do
