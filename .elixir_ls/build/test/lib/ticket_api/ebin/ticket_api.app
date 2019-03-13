@@ -14,6 +14,7 @@
                         'Elixir.TicketApi.Guardian.AuthPipeline',
                         'Elixir.TicketApi.Guardian.Plug',
                         'Elixir.TicketApi.Pay','Elixir.TicketApi.Pay.Payment',
+                        'Elixir.TicketApi.Pay.PaymentAdapter',
                         'Elixir.TicketApi.Repo','Elixir.TicketApi.Tc',
                         'Elixir.TicketApi.Tc.TicketCount',
                         'Elixir.TicketApi.Tick',
