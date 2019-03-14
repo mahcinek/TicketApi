@@ -3,6 +3,7 @@ defmodule TicketApi.Tick.Ticket do
   import Ecto.Changeset
   alias TicketApi.Tt
   alias TicketApi.Tc
+  alias TicketApi.Tick
 
 
   schema "tickets" do
@@ -44,7 +45,8 @@ defmodule TicketApi.Tick.Ticket do
       event_id = get_field(changeset, :count)
       case Tt.validate_type(ticket_type_id, count, event_id) do
         {:ok, ticket_count} -> reserve_ticket_count(changeset, ticket_count, count)
-        {:error, :not_found} -> add_error(changeset, :ticket_type_id, "Association not found")
+        {:error, :not_found_count} -> add_error(changeset, :ticket_type_id, "Association not found count")
+        {:error, :not_found_type} -> add_error(changeset, :ticket_type_id, "Association not found type")
         {:error, :wrong_count} -> add_error(changeset, :count, "Wrong count for ticket count of this type")
         {:error, :too_many} -> add_error(changeset, :count, "You want to buy too many tickets")
       end
@@ -55,6 +57,23 @@ defmodule TicketApi.Tick.Ticket do
 
   defp reserve_ticket_count(changeset, ticket_count, count) do
     Tc.update_ticket_count(ticket_count, %{size_left: ticket_count.size_left - count})
+    Rihanna.schedule(
+      {TicketApi.Tick.Ticket, :ticket_job, [get_field(changeset, :reservation_code), ticket_count, count]},
+      at: in_15_minutes()
+    )
     changeset
+  end
+
+  def ticket_job(reservation_code, ticket_count, count) do
+    Tc.update_ticket_count(ticket_count, %{size_left: ticket_count.size_left + count})
+    ticket = Tick.get_ticket_by_code!(reservation_code)
+    if ticket.only_reserved do
+      Tick.delete_ticket(ticket)
+    end
+  end
+
+  def in_15_minutes() do
+    dt = DateTime.utc_now |> DateTime.add(15, :minute)
+    dt
   end
 end

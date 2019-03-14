@@ -19,7 +19,8 @@ defmodule TicketApi.Factory do
       first_name: "some updated first_name",
       last_name: "some updated last_name",
       event: build(:event),
-      user: build(:user)
+      user: build(:user),
+      ticket_type: insert(:ticket_type3)
     }
   end
 
@@ -52,12 +53,28 @@ defmodule TicketApi.Factory do
       t_type: "avoid_one",
     }
   end
+  def ticket_type3_factory do
+    %TicketApi.Tt.TicketType{
+      name: "event",
+      t_type: "avoid_one",
+      ticket_counts: [insert(:ticket_count3)]
+    }
+  end
 
   def ticket_count_factory do
     %TicketApi.Tc.TicketCount{
       max_size: 20,
       size_left: 15,
       ticket_type: build(:ticket_type)
+    }
+  end
+
+  def ticket_count3_factory do
+    %TicketApi.Tc.TicketCount{
+      max_size: 20,
+      size_left: 15,
+      event: insert(:event),
+      ticket_type: build(:ticket_type3)
     }
   end
 

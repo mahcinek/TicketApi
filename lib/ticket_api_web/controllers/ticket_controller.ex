@@ -41,6 +41,7 @@ defmodule TicketApiWeb.TicketController do
 
   defp add_user_id(ticket_params, user) do
     Map.put(ticket_params, "user_id", user.id)
+    |> Map.put("reservation_only", true)
   end
 
   defp filter_params(ticket_params) do

@@ -7,6 +7,7 @@ defmodule TicketApi.Tt do
   alias TicketApi.Repo
 
   alias TicketApi.Tt.TicketType
+  alias TicketApi.Tc.TicketCount
 
   @doc """
   Returns the list of ticket_types.
@@ -105,18 +106,18 @@ defmodule TicketApi.Tt do
   def validate_type(ticket_type_id, count, event_id) do
     case get_ticket_type!(ticket_type_id) do
       nil ->
-        {:error, :not_found}
+        {:error, :not_found_type}
       ticket_type ->
         validate_count(ticket_type, count, event_id)
     end
   end
 
   defp validate_count(ticket_type, count, event_id) do
-    query = from tc in "ticket_counts",
+    query = from tc in TicketCount,
           where: tc.event_id == ^event_id and tc.ticket_type_id == ^ticket_type.id
     case Repo.one(query) do
       nil ->
-        {:error, :not_found}
+        {:error, :not_found_count}
       ticket_count ->
         can_subtract?(ticket_count, count, ticket_type.t_type)
     end

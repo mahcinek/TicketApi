@@ -30,6 +30,10 @@ config :ticket_api, TicketApi.Guardian,
        issuer: "TicketApi",
        secret_key: "xPqFkVYs+rR0ex9R3LOemGEKofHuoCQx6knk28W0VtlZ+dZJscVsqtQ41XNPMwGW"
 
+# Rihanna for backgroud job processing
+config :rihanna,
+  producer_postgres_connection: {Ecto, TicketApi.Repo}
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

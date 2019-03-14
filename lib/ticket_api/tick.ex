@@ -36,6 +36,7 @@ defmodule TicketApi.Tick do
 
   """
   def get_ticket!(id), do: Repo.get!(Ticket, id)
+  def get_ticket_by_code!(code), do: Repo.get_by!(Ticket, reservation_code: code)
 
   @doc """
   Creates a ticket.
