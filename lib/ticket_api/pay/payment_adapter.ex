@@ -1,7 +1,7 @@
 defmodule TicketApi.Pay.PaymentAdapter do
 
 def charge(_, "card_error",_) do
-  {:error, :card_errror}
+  {:error, :card_error}
 end
 
 def charge(_, "payment_error",_) do

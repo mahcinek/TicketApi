@@ -5,10 +5,18 @@ defmodule TicketApiWeb.PaymentControllerTest do
   alias TicketApi.Pay
   alias TicketApi.Auth
   alias TicketApi.Pay.Payment
+  require IEx
 
   @create_attrs %{
     info: "some info"
   }
+
+  def valid_attrs do
+    %{info: "some info",
+      card_info: "info",
+      currency: "eur"}
+  end
+
   @update_attrs %{
     info: "some updated info"
   }
@@ -25,8 +33,10 @@ defmodule TicketApiWeb.PaymentControllerTest do
 
   describe "create payment" do
     setup [:setup_auth]
-    test "renders payment when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.payment_path(conn, :create), payment: @create_attrs)
+    test "renders payment when data is valid", %{conn: conn, payment: payment} do
+      IEx.pry
+      attrs =  Map.put(valid_attrs, :user_id, payment.user_id) |> Map.put(:ticket_id, payment.ticket_id)
+      conn = post(conn, Routes.payment_path(conn, :create), payment: attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
       conn = get(conn, Routes.payment_path(conn, :show, id))

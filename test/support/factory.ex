@@ -93,11 +93,11 @@ defmodule TicketApi.Factory do
 
   def payment_factory do
     %TicketApi.Pay.Payment{
-      info: "aaa",
-      currency: "eur",
+      info: "some info",
       card_info: "info",
+      currency: "eur",
       user: build(:user2),
-      ticket: build(:ticket)
+      ticket: insert(:ticket)
     }
   end
 
