@@ -6,8 +6,9 @@ defmodule TicketApi.PayTest do
   describe "payments" do
     alias TicketApi.Pay.Payment
 
-    @valid_attrs %{info: "some info"}
+    @valid_attrs %{info: "some info", card_info: "info", currency: "eur"}
     @update_attrs %{info: "some updated info"}
+    @nil_virtuals %{card_info: nil, currency: nil}
     @invalid_attrs %{info: nil}
 
     def payment_fixture(attrs \\ %{}) do
@@ -16,7 +17,7 @@ defmodule TicketApi.PayTest do
         |> Enum.into(@valid_attrs)
         |> Pay.create_payment()
 
-      payment
+      Pay.get_payment!(payment.id)
     end
 
     test "list_payments/0 returns all payments" do

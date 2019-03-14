@@ -49,6 +49,7 @@ defmodule TicketApi.Factory do
     %TicketApi.Tt.TicketType{
       name: "event",
       t_type: "multiple",
+      price: 20
     }
   end
 
@@ -63,13 +64,15 @@ defmodule TicketApi.Factory do
     %TicketApi.Tt.TicketType{
       name: "event",
       t_type: "avoid_one",
+      price: 35
     }
   end
   def ticket_type3_factory do
     %TicketApi.Tt.TicketType{
       name: "event",
       t_type: "avoid_one",
-      ticket_counts: [insert(:ticket_count3)]
+      ticket_counts: [insert(:ticket_count3)],
+      price: 30
     }
   end
 
@@ -91,6 +94,8 @@ defmodule TicketApi.Factory do
   def payment_factory do
     %TicketApi.Pay.Payment{
       info: "aaa",
+      currency: "eur",
+      card_info: "info",
       user: build(:user2),
       ticket: build(:ticket)
     }

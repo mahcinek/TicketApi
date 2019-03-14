@@ -6,7 +6,7 @@ defmodule TicketApi.TtTest do
   describe "ticket_types" do
     alias TicketApi.Tt.TicketType
 
-    @valid_attrs %{name: "some name", t_type: "altogether"}
+    @valid_attrs %{name: "some name", t_type: "altogether", price: 40}
     @update_attrs %{name: "some updated name", t_type: "multiple"}
     @invalid_attrs %{name: nil, t_type: nil}
 
