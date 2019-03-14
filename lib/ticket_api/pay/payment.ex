@@ -4,7 +4,6 @@ defmodule TicketApi.Pay.Payment do
   alias TicketApi.Pay.PaymentAdapter
   alias TicketApi.Tick
   alias TicketApi.Repo
-  require IEx
 
 
   schema "payments" do
@@ -42,7 +41,6 @@ defmodule TicketApi.Pay.Payment do
 
   def charge_money(changeset) do
     if changeset.valid? do
-      IEx.pry
       ticket = Tick.get_ticket!(get_field(changeset, :ticket_id))
               |> Repo.preload(:ticket_type)
       case PaymentAdapter.charge(

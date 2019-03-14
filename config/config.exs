@@ -30,10 +30,21 @@ config :ticket_api, TicketApi.Guardian,
        issuer: "TicketApi",
        secret_key: "xPqFkVYs+rR0ex9R3LOemGEKofHuoCQx6knk28W0VtlZ+dZJscVsqtQ41XNPMwGW"
 
-# Rihanna for backgroud job processing
-config :rihanna,
-  jobs_table_name: "rihanna_jobs",
-  producer_postgres_connection: {Ecto, TicketApi.Repo}
+# Exq for backgroud job processing
+config :exq,
+  name: Exq,
+  host: "127.0.0.1",
+  port: 6379,
+  namespace: "exq",
+  concurrency: 10,
+  start_on_application: false,
+  queues: ["default"],
+  poll_timeout: 50,
+  scheduler_poll_timeout: 200,
+  scheduler_enable: true,
+  max_retries: 25,
+  shutdown_timeout: 50000,
+  json_library: Jason
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

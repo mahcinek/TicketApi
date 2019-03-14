@@ -32,6 +32,7 @@ defmodule TicketApiWeb.EventControllerTest do
 
     test "lists all events", %{conn: conn} do
       conn = get(conn, Routes.event_path(conn, :index))
+      |> doc(description: "List all events", operation_id: "list_events")
       assert json_response(conn, 200)["data"] !== []
     end
   end

@@ -1,14 +1,12 @@
 defmodule TicketApiWeb.TicketControllerTest do
   use TicketApiWeb.ConnCase
-  require IEx
 
   alias TicketApi.Auth
   alias TicketApi.Repo
   alias TicketApi.Tick.Ticket
-  alias TicketApi.Tick
   import TicketApi.Factory
 
-  def create_attrs do
+  def create_attrs() do
 
   %{
     first_name: "some first_name",
@@ -27,6 +25,7 @@ defmodule TicketApiWeb.TicketControllerTest do
     setup [:setup_auth]
     test "lists all tickets", %{conn: conn} do
       conn = get(conn, Routes.ticket_path(conn, :index))
+      |> doc(description: "List all tickets", operation_id: "list_tickets")
       assert json_response(conn, 200)["data"] !== []
     end
   end
@@ -34,9 +33,10 @@ defmodule TicketApiWeb.TicketControllerTest do
   describe "create" do
     setup [:setup_auth]
     test "Reserve ticket", %{conn: conn, ticket: ticket} do
-      attrs = Map.put(create_attrs, :event_id, ticket.event_id)
+      attrs = Map.put(create_attrs(), :event_id, ticket.event_id)
                       |> Map.put(:ticket_type_id, ticket.ticket_type_id)
       conn = post(conn, Routes.ticket_path(conn, :create), ticket: attrs)
+      |> doc(description: "Reserve ticket", operation_id: "reserve_ticket")
       assert json_response(conn, 201)["data"] !== []
     end
   end
@@ -50,6 +50,7 @@ defmodule TicketApiWeb.TicketControllerTest do
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
       conn = get(conn, Routes.ticket_path(conn, :show, id))
+      |> doc(description: "Update ticket", operation_id: "update_ticket")
 
       assert length(Map.keys(json_response(conn, 200)["data"])) != 0
     end

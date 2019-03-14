@@ -13,8 +13,8 @@ defmodule TicketApi.TickTest do
     @update_attrs %{first_name: "some updated first_name", last_name: "some updated last_name", only_reserved: false, paid: false, reservation_code: "some updated reservation_code"}
     @invalid_attrs %{first_name: nil, last_name: nil, only_reserved: nil, paid: nil, reservation_code: nil, count: nil, event_id: nil, ticket_type_id: nil}
 
-    def ticket_fixture(attrs \\ %{}) do
-      attrs = gen_vars
+    def ticket_fixture(_attrs \\ %{}) do
+      attrs = gen_vars()
       {:ok, ticket} =
         attrs
         |> Enum.into(attrs)
@@ -33,7 +33,7 @@ defmodule TicketApi.TickTest do
     end
 
     test "create_ticket/1 with valid data creates a ticket" do
-      assert {:ok, %Ticket{} = ticket} = Tick.create_ticket(gen_vars)
+      assert {:ok, %Ticket{} = ticket} = Tick.create_ticket(gen_vars())
       assert ticket.first_name == "some first_name"
       assert ticket.last_name == "some last_name"
       assert ticket.only_reserved == true
@@ -71,15 +71,15 @@ defmodule TicketApi.TickTest do
     end
   end
 
-  defp c_ticket do
+  defp c_ticket() do
     ticket = insert(:ticket) |>Repo.preload([ticket_type: [:ticket_counts]])
     TicketApi.Tc.update_ticket_count(List.first(ticket.ticket_type.ticket_counts), %{event_id: ticket.event_id})
     ticket
   end
 
-  defp gen_vars do
-    tick = c_ticket
-    Map.put(valid_attrs, :event_id, tick.event_id)
+  defp gen_vars() do
+    tick = c_ticket()
+    Map.put(valid_attrs(), :event_id, tick.event_id)
                 |> Map.put(:ticket_type_id, tick.ticket_type_id)
   end
 end

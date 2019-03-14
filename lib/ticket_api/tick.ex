@@ -6,6 +6,8 @@ defmodule TicketApi.Tick do
   import Ecto.Query, warn: false
   alias TicketApi.Repo
 
+  require IEx
+
   alias TicketApi.Tick.Ticket
 
   @doc """
@@ -40,7 +42,10 @@ defmodule TicketApi.Tick do
   def ticket_preload!(ticket) do
     ticket |>preload([ticket_type: [:ticket_counts]])
   end
-  def get_ticket_by_code!(code), do: Repo.get_by!(Ticket, reservation_code: code)
+  def get_ticket_by_code!(code) do
+    IEx.pry
+    Repo.get_by!(Ticket, reservation_code: code)
+  end
 
   @doc """
   Creates a ticket.

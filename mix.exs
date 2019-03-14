@@ -20,7 +20,7 @@ defmodule TicketApi.MixProject do
   def application do
     [
       mod: {TicketApi.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :exq]
     ]
   end
 
@@ -47,7 +47,7 @@ defmodule TicketApi.MixProject do
       {:comeonin, "~> 4.0"},
       {:bcrypt_elixir, "~> 1.0"},
       {:bureaucrat, "~> 0.2.5"},
-      {:rihanna, ">= 0.0.0"}
+      {:exq, "~> 0.13.1"}
     ]
   end
 

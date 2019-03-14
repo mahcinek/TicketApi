@@ -21,6 +21,12 @@ defmodule TicketApi.Pay do
     Repo.all(Payment)
   end
 
+  def list_payments(user) do
+    query = from p in Payment,
+    where: p.user_id == ^user.id
+    Repo.all(query)
+  end
+
   @doc """
   Gets a single payment.
 
@@ -36,6 +42,11 @@ defmodule TicketApi.Pay do
 
   """
   def get_payment!(id), do: Repo.get!(Payment, id)
+  def get_payment!(id, user_id) do
+    query = from p in Payment,
+     where: p.user_id == ^user_id and p.id == ^id
+    Repo.one(query)
+  end
 
   @doc """
   Creates a payment.

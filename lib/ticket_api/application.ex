@@ -2,6 +2,7 @@ defmodule TicketApi.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
+  import Supervisor.Spec, warn: false
 
   use Application
 
@@ -11,10 +12,10 @@ defmodule TicketApi.Application do
       # Start the Ecto repository
       TicketApi.Repo,
       # Start the endpoint when the application starts
-      TicketApiWeb.Endpoint
+      TicketApiWeb.Endpoint,
       # Starts a worker by calling: TicketApi.Worker.start_link(arg)
       # {TicketApi.Worker, arg},
-      # {Rihanna.Supervisor, [postgrex: TicketApi.Repo.config()]}
+      supervisor(Exq, []),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

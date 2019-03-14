@@ -2,14 +2,7 @@ defmodule TicketApiWeb.PaymentControllerTest do
   use TicketApiWeb.ConnCase
   import TicketApi.Factory
 
-  alias TicketApi.Pay
   alias TicketApi.Auth
-  alias TicketApi.Pay.Payment
-  require IEx
-
-  @create_attrs %{
-    info: "some info"
-  }
 
   def valid_attrs do
     %{info: "some info",
@@ -17,9 +10,6 @@ defmodule TicketApiWeb.PaymentControllerTest do
       currency: "eur"}
   end
 
-  @update_attrs %{
-    info: "some updated info"
-  }
   @invalid_attrs %{info: nil}
 
 
@@ -34,12 +24,13 @@ defmodule TicketApiWeb.PaymentControllerTest do
   describe "create payment" do
     setup [:setup_auth]
     test "renders payment when data is valid", %{conn: conn, payment: payment} do
-      IEx.pry
-      attrs =  Map.put(valid_attrs, :user_id, payment.user_id) |> Map.put(:ticket_id, payment.ticket_id)
+      attrs =  Map.put(valid_attrs(), :user_id, payment.user_id) |> Map.put(:ticket_id, payment.ticket_id)
       conn = post(conn, Routes.payment_path(conn, :create), payment: attrs)
+      |> doc(description: "Create payment", operation_id: "create_payment")
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
       conn = get(conn, Routes.payment_path(conn, :show, id))
+            |> doc(description: "Show payments", operation_id: "show_payments")
 
       assert %{
                "id" => id,
@@ -49,6 +40,7 @@ defmodule TicketApiWeb.PaymentControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, Routes.payment_path(conn, :create), payment: @invalid_attrs)
+              |> doc(description: "invalid creattion params", operation_id: "create_invalid")
       assert json_response(conn, 422)["errors"] != %{}
     end
   end

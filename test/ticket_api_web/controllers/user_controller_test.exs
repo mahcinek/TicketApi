@@ -32,6 +32,7 @@ defmodule TicketApiWeb.UserControllerTest do
   describe "create user" do
     test "renders user when data is valid", %{conn: conn} do
       conn = post(conn, Routes.user_path(conn, :create), user: @create_attrs)
+              |> doc(description: "Create user", operation_id: "create_user")
             assert length(Map.keys(json_response(conn, 201))) != 0
     end
 
@@ -47,6 +48,7 @@ defmodule TicketApiWeb.UserControllerTest do
 
     test "renders author when data is valid", %{conn: conn, user: %User{id: id} = _user} do
       conn = put(conn, Routes.user_path(conn, :update), user: @update_attrs)
+            |> doc(description: "Update user", operation_id: "update_user")
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
       conn = get(conn, Routes.user_path(conn, :show, id))

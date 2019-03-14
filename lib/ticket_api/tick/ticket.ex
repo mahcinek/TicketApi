@@ -3,13 +3,11 @@ defmodule TicketApi.Tick.Ticket do
   import Ecto.Changeset
   alias TicketApi.Tt
   alias TicketApi.Tc
-  alias TicketApi.Tick
-
 
   schema "tickets" do
     field :first_name, :string
     field :last_name, :string
-    field :only_reserved, :boolean, default: false
+    field :only_reserved, :boolean, default: true
     field :paid, :boolean, default: false
     field :reservation_code, :string
     field :count, :integer
@@ -57,23 +55,21 @@ defmodule TicketApi.Tick.Ticket do
 
   defp reserve_ticket_count(changeset, ticket_count, count) do
     Tc.update_ticket_count(ticket_count, %{size_left: ticket_count.size_left - count})
-    # Rihanna.schedule(
-    #   {TicketApi.Tick.Ticket, :ticket_job, [get_field(changeset, :reservation_code), ticket_count, count]},
-    #   at: in_15_minutes()
-    # )
+    {:ok, _ack} = enqueue_feed([get_field(changeset, :reservation_code), ticket_count.id, count])
     changeset
   end
 
-  def ticket_job(reservation_code, ticket_count, count) do
-    Tc.update_ticket_count(ticket_count, %{size_left: ticket_count.size_left + count})
-    ticket = Tick.get_ticket_by_code!(reservation_code)
-    if ticket.only_reserved do
-      Tick.delete_ticket(ticket)
-    end
+  def in_15_minutes() do
+    DateTime.utc_now |> DateTime.add(900, :second)
   end
 
-  def in_15_minutes() do
-    dt = DateTime.utc_now |> DateTime.add(15, :minute)
-    dt
+  def enqueue_feed(args) do
+    if Mix.env == :test do
+    #   :timer.sleep(1000)
+    #   apply(TicketApi.TicketWorker, :perform, args)
+    {:ok, nil}
+    else
+      Exq.enqueue(Exq, "default", 60, TicketApi.TicketWorker, args)
+    end
   end
 end

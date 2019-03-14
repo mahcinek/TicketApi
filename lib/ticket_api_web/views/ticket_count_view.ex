@@ -7,7 +7,8 @@ use TicketApiWeb, :view
       max_size: ticket_count.max_size,
       size_left: ticket_count.size_left,
       ticket_type: ticket_count.ticket_type.name,
-      t_type: ticket_count.ticket_type.t_type
+      t_type: ticket_count.ticket_type.t_type,
+      price: ticket_count.ticket_type.price
     }
   end
 

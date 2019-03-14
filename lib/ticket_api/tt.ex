@@ -5,7 +5,6 @@ defmodule TicketApi.Tt do
 
   import Ecto.Query, warn: false
   alias TicketApi.Repo
-  require IEx
 
   alias TicketApi.Tt.TicketType
   alias TicketApi.Tc.TicketCount
