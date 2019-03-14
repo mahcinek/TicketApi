@@ -39,7 +39,7 @@ In test enviroment the backgroud job is beeing bypassed to allow for asynch test
 
 If the performance of the app isn't sufficient it could be upgraded with an otp storage that stores the state of the available tickets.
 This would of course be faster than using the database as it is now.
-It could also be updated with a websocket api (with longpoll support) to take advantage of its faster and countinous continuous.
+It could also be updated with a websocket api (with longpoll support) to take advantage of its faster and countinous connection.
 
 Deployment tips:
 
