@@ -19,6 +19,7 @@ To start your Phoenix server:
 * Start Phoenix server with `mix phx.server`
 * You can find endpoint docs created with bureaucrat at DOCS.md
 * You can can run tests with `mix test`
+* If you want to run it in production remember to add some values to the database. Most of the administration staff is not implemented. There is no script you can run to seed the database.
 
 Now all of the API endpoints will be avabile at the adress starting with [`localhost:4000/api`](http://localhost:4000/api) from your browser.
 If you deploy this program remeber to use https instead of http (can be changed in config with cert).
