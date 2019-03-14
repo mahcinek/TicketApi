@@ -7,7 +7,7 @@ defmodule TicketApi.Tt.TicketType do
     field :name, :string
     field :t_type, :string
     has_many :tickets, TicketApi.Tick.Ticket
-    has_many :ticket_types, TicketApi.Tc.TicketCount
+    has_many :ticket_counts, TicketApi.Tc.TicketCount
 
     timestamps()
   end

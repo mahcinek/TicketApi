@@ -2,7 +2,7 @@
              [{applications,[kernel,stdlib,elixir,logger,runtime_tools,
                              randomizer,gettext,jason,bcrypt_elixir,comeonin,
                              phoenix_pubsub,postgrex,ecto_sql,ex_machina,
-                             plug_cowboy,phoenix,guardian,bureaucrat,
+                             rihanna,plug_cowboy,phoenix,guardian,bureaucrat,
                              phoenix_ecto]},
               {description,"ticket_api"},
               {modules,['Elixir.TicketApi','Elixir.TicketApi.Application',

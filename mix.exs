@@ -46,7 +46,8 @@ defmodule TicketApi.MixProject do
       {:ex_machina, "~> 2.3", only: :test},
       {:comeonin, "~> 4.0"},
       {:bcrypt_elixir, "~> 1.0"},
-      {:bureaucrat, "~> 0.2.5"}
+      {:bureaucrat, "~> 0.2.5"},
+      {:rihanna, ">= 0.0.0"}
     ]
   end
 

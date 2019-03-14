@@ -101,4 +101,51 @@ defmodule TicketApi.Tt do
   def change_ticket_type(%TicketType{} = ticket_type) do
     TicketType.changeset(ticket_type, %{})
   end
+
+  def validate_type(ticket_type_id, count, event_id) do
+    case get_ticket_type!(ticket_type_id) do
+      nil ->
+        {:error, :not_found}
+      ticket_type ->
+        validate_count(ticket_type, count, event_id)
+    end
+  end
+
+  defp validate_count(ticket_type, count, event_id) do
+    query = from tc in "ticket_counts",
+          where: tc.event_id == ^event_id and tc.ticket_type_id == ^ticket_type.id
+    case Repo.one(query) do
+      nil ->
+        {:error, :not_found}
+      ticket_count ->
+        can_subtract?(ticket_count, count, ticket_type.t_type)
+    end
+  end
+
+  defp can_subtract?(count_left, size, t_type) do
+    case t_type do
+      "multiple" ->
+        if size < count_left.size_left do
+          if rem(size,2) == 0 do
+            {:ok, count_left}
+          else
+            {:error, :wrong_count}
+          end
+        else
+          {:error, :too_many}
+        end
+      "altogether" ->
+        if size < count_left.size_left do
+          {:ok, count_left}
+        else
+          {:error, :too_many}
+        end
+      "avoid_one" ->
+        if count_left.size_left - size > 1 do
+          {:ok, count_left}
+        else
+          {:error, :too_many}
+        end
+    end
+  end
 end
