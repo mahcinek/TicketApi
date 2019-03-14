@@ -123,6 +123,7 @@ defmodule TicketApi.Tt do
     end
   end
 
+  # ticket count verifications for different types
   defp can_subtract?(count_left, size, t_type) do
     case t_type do
       "multiple" ->

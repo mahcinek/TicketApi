@@ -27,6 +27,7 @@ defmodule TicketApi.Pay.Payment do
     |> nullify_card_info
   end
 
+  # if valid changeset on create check if card info exists, it isn't stored since its a security vulnerability
   def validate_has_card_info_on_create(changeset) do
     if changeset.valid? do
       if is_nil(get_field(changeset, :created_at)) do
@@ -39,8 +40,9 @@ defmodule TicketApi.Pay.Payment do
     end
   end
 
+  # charge money with provided adapter only on create if valid
   def charge_money(changeset) do
-    if changeset.valid? do
+    if changeset.valid? and is_nil(get_field(changeset, :created_at)) do
       ticket = Tick.get_ticket!(get_field(changeset, :ticket_id))
               |> Repo.preload(:ticket_type)
       case PaymentAdapter.charge(
@@ -58,21 +60,25 @@ defmodule TicketApi.Pay.Payment do
     end
     changeset
   end
+
+  # card info after charge is nullyfied since its a security vulnerability
   def nullify_card_info(changeset) do
     change(changeset, %{card_info: nil})
   end
 
+  # After ticket is payed for its no longer a reservation
   defp save_ticket(ticket, changeset) do
     Tick.update_ticket(ticket, %{reservation_only: false})
     changeset
   end
 
+  # check on create if currency and card info aren't blank, they will be later wiped
   defp check_nil_card_info_currency(changeset)do
     if is_nil(get_field(changeset, :card_info)) do
       add_error(changeset, :card_info, "Can't be blank")
     end
     if is_nil(get_field(changeset, :currency)) do
-      add_error(changeset, :card_info, "Can't be blank")
+      add_error(changeset, :currency, "Can't be blank")
     end
     changeset
   end

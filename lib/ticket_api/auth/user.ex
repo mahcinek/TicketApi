@@ -19,6 +19,8 @@ defmodule TicketApi.Auth.User do
   end
 
   @doc false
+
+  # validate things like email format, email uniq, password == password_confirmation
   def changeset(user, attrs) do
     user
     |> cast(attrs, [:email, :is_active, :first_name, :last_name, :phone_number, :password, :password_confirmation])
@@ -29,6 +31,7 @@ defmodule TicketApi.Auth.User do
     |> put_password_hash()
   end
 
+  # Set password hash using Bcrypt from given password
   defp put_password_hash(
          %Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset
        ) do

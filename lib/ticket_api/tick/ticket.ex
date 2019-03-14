@@ -36,6 +36,7 @@ defmodule TicketApi.Tick.Ticket do
     end
   end
 
+  # ticket count validation for reservations
   def validate_ticket_count(changeset) do
     if changeset.valid? and is_nil(get_field(changeset, :created_at)) do
       ticket_type_id = get_field(changeset, :ticket_type_id)
@@ -53,6 +54,7 @@ defmodule TicketApi.Tick.Ticket do
     end
   end
 
+  # reserve ticket and enqueue job to delete reservation in 15 minutes
   defp reserve_ticket_count(changeset, ticket_count, count) do
     Tc.update_ticket_count(ticket_count, %{size_left: ticket_count.size_left - count})
     {:ok, _ack} = enqueue_feed([get_field(changeset, :reservation_code), ticket_count.id, count])
