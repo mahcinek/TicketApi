@@ -1,14 +1,21 @@
 defmodule TicketApiWeb.TicketControllerTest do
   use TicketApiWeb.ConnCase
+  require IEx
 
   alias TicketApi.Auth
+  alias TicketApi.Repo
   alias TicketApi.Tick.Ticket
+  alias TicketApi.Tick
   import TicketApi.Factory
 
-  @create_attrs %{
+  def create_attrs do
+
+  %{
     first_name: "some first_name",
-    last_name: "some last_name"
+    last_name: "some last_name",
+    count: 2
   }
+  end
   @update_attrs %{
     first_name: "some updated first_name",
     last_name: "some updated last_name"
@@ -25,9 +32,11 @@ defmodule TicketApiWeb.TicketControllerTest do
   end
 
   describe "create" do
-    setup [:setup_auth_no_ticket]
-    test "Reserve ticket", %{conn: conn} do
-      conn = post(conn, Routes.ticket_path(conn, :create), ticket: @create_attrs)
+    setup [:setup_auth]
+    test "Reserve ticket", %{conn: conn, ticket: ticket} do
+      attrs = Map.put(create_attrs, :event_id, ticket.event_id)
+                      |> Map.put(:ticket_type_id, ticket.ticket_type_id)
+      conn = post(conn, Routes.ticket_path(conn, :create), ticket: attrs)
       assert json_response(conn, 201)["data"] !== []
     end
   end
@@ -36,6 +45,7 @@ defmodule TicketApiWeb.TicketControllerTest do
     setup [:setup_auth]
 
     test "renders ticket when data is valid", %{conn: conn, ticket: %Ticket{id: id} = ticket} do
+
       conn = put(conn, Routes.ticket_path(conn, :update, ticket), ticket: @update_attrs)
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
@@ -53,7 +63,9 @@ defmodule TicketApiWeb.TicketControllerTest do
 
   defp setup_auth %{conn: conn} do
     ticket = insert(:ticket)
+    ticket = ticket |>Repo.preload([ticket_type: [:ticket_counts]])
     user = ticket.user
+    TicketApi.Tc.update_ticket_count(List.first(ticket.ticket_type.ticket_counts), %{event_id: ticket.event_id})
     {:ok, jwt} = Auth.create_token(user)
     conn = conn
            |> put_req_header("accept", "application/json")

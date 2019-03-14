@@ -15,7 +15,7 @@ defmodule TicketApi.Tc.TicketCount do
   @doc false
   def changeset(ticket_count, attrs) do
     ticket_count
-    |> cast(attrs, [:max_size, :size_left])
+    |> cast(attrs, [:max_size, :size_left, :event_id])
     |> validate_required([:max_size, :size_left])
   end
 end

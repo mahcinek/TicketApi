@@ -1,7 +1,9 @@
 defmodule TicketApiWeb.PaymentControllerTest do
   use TicketApiWeb.ConnCase
+  import TicketApi.Factory
 
   alias TicketApi.Pay
+  alias TicketApi.Auth
   alias TicketApi.Pay.Payment
 
   @create_attrs %{
@@ -12,23 +14,17 @@ defmodule TicketApiWeb.PaymentControllerTest do
   }
   @invalid_attrs %{info: nil}
 
-  def fixture(:payment) do
-    {:ok, payment} = Pay.create_payment(@create_attrs)
-    payment
-  end
-
-  setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
-  end
 
   describe "index" do
+    setup [:setup_auth]
     test "lists all payments", %{conn: conn} do
       conn = get(conn, Routes.payment_path(conn, :index))
-      assert json_response(conn, 200)["data"] == []
+      assert json_response(conn, 200)["data"] !== []
     end
   end
 
   describe "create payment" do
+    setup [:setup_auth]
     test "renders payment when data is valid", %{conn: conn} do
       conn = post(conn, Routes.payment_path(conn, :create), payment: @create_attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]
@@ -47,8 +43,22 @@ defmodule TicketApiWeb.PaymentControllerTest do
     end
   end
 
-  defp create_payment(_) do
-    payment = fixture(:payment)
-    {:ok, payment: payment}
+  defp setup_auth %{conn: conn} do
+    payment = insert(:payment)
+    user = payment.user
+    {:ok, jwt} = Auth.create_token(user)
+    conn = conn
+           |> put_req_header("accept", "application/json")
+           |> put_req_header("authorization", "Bearer #{jwt}")
+    {:ok, conn: conn, user: user, payment: payment}
+  end
+
+  defp setup_auth_no_payment %{conn: conn} do
+    user = insert(:user)
+    {:ok, jwt} = Auth.create_token(user)
+    conn = conn
+           |> put_req_header("accept", "application/json")
+           |> put_req_header("authorization", "Bearer #{jwt}")
+    {:ok, conn: conn, user: user}
   end
 end

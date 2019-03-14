@@ -26,7 +26,7 @@ defmodule TicketApi.Tick.Ticket do
     ticket
     |> cast(attrs, [:only_reserved, :paid, :first_name, :last_name, :reservation_code, :count, :ticket_type_id, :user_id, :event_id])
     |> generate_reservation_code()
-    |> validate_required([:only_reserved, :paid, :first_name, :last_name, :reservation_code, :ticket_type_id, :event_id])
+    |> validate_required([:only_reserved, :paid, :first_name, :last_name, :reservation_code, :ticket_type_id, :event_id, :count])
     |> validate_ticket_count
   end
 
@@ -39,10 +39,10 @@ defmodule TicketApi.Tick.Ticket do
   end
 
   def validate_ticket_count(changeset) do
-    if is_nil(get_field(changeset, :created_at)) do
+    if changeset.valid? and is_nil(get_field(changeset, :created_at)) do
       ticket_type_id = get_field(changeset, :ticket_type_id)
       count = get_field(changeset, :count)
-      event_id = get_field(changeset, :count)
+      event_id = get_field(changeset, :event_id)
       case Tt.validate_type(ticket_type_id, count, event_id) do
         {:ok, ticket_count} -> reserve_ticket_count(changeset, ticket_count, count)
         {:error, :not_found_count} -> add_error(changeset, :ticket_type_id, "Association not found count")
@@ -57,10 +57,10 @@ defmodule TicketApi.Tick.Ticket do
 
   defp reserve_ticket_count(changeset, ticket_count, count) do
     Tc.update_ticket_count(ticket_count, %{size_left: ticket_count.size_left - count})
-    Rihanna.schedule(
-      {TicketApi.Tick.Ticket, :ticket_job, [get_field(changeset, :reservation_code), ticket_count, count]},
-      at: in_15_minutes()
-    )
+    # Rihanna.schedule(
+    #   {TicketApi.Tick.Ticket, :ticket_job, [get_field(changeset, :reservation_code), ticket_count, count]},
+    #   at: in_15_minutes()
+    # )
     changeset
   end
 

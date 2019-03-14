@@ -36,6 +36,10 @@ defmodule TicketApi.Tick do
 
   """
   def get_ticket!(id), do: Repo.get!(Ticket, id)
+  def get_ticket_ass!(id), do: Repo.get!(Ticket, id) |>preload([ticket_type: [:ticket_counts]])
+  def ticket_preload!(ticket) do
+    ticket |>preload([ticket_type: [:ticket_counts]])
+  end
   def get_ticket_by_code!(code), do: Repo.get_by!(Ticket, reservation_code: code)
 
   @doc """

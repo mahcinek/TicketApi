@@ -14,12 +14,24 @@ defmodule TicketApi.Factory do
     }
   end
 
+  def user2_factory do
+    %TicketApi.Auth.User{
+      last_name: "some last_name",
+      first_name: "some first_name",
+      email: "emailowo@email.com",
+      password: "password",
+      password_confirmation: "password",
+      is_active: true,
+      phone_number: "123412347"
+    }
+  end
+
   def ticket_factory do
     %TicketApi.Tick.Ticket{
       first_name: "some updated first_name",
       last_name: "some updated last_name",
-      event: build(:event),
-      user: build(:user),
+      event: insert(:event),
+      user: insert(:user),
       ticket_type: insert(:ticket_type3)
     }
   end
@@ -72,9 +84,15 @@ defmodule TicketApi.Factory do
   def ticket_count3_factory do
     %TicketApi.Tc.TicketCount{
       max_size: 20,
-      size_left: 15,
-      event: insert(:event),
-      ticket_type: build(:ticket_type3)
+      size_left: 15
+    }
+  end
+
+  def payment_factory do
+    %TicketApi.Pay.Payment{
+      info: "aaa",
+      user: build(:user2),
+      ticket: build(:ticket)
     }
   end
 

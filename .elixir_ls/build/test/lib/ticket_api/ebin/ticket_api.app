@@ -7,6 +7,7 @@
               {description,"ticket_api"},
               {modules,['Elixir.TicketApi','Elixir.TicketApi.Application',
                         'Elixir.TicketApi.Auth','Elixir.TicketApi.Auth.User',
+                        'Elixir.TicketApi.AuthErrorHandler',
                         'Elixir.TicketApi.DataCase','Elixir.TicketApi.Ev',
                         'Elixir.TicketApi.Ev.Event',
                         'Elixir.TicketApi.Factory',

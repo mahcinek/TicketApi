@@ -32,6 +32,7 @@ config :ticket_api, TicketApi.Guardian,
 
 # Rihanna for backgroud job processing
 config :rihanna,
+  jobs_table_name: "rihanna_jobs",
   producer_postgres_connection: {Ecto, TicketApi.Repo}
 
 # Import environment specific config. This must remain at the bottom

@@ -1,3 +1,7 @@
 defmodule TicketApi.Repo.Migrations.CreateRihannaJobsTable do
-  use Rihanna.Migration
+  use Ecto.Migration
+
+  def change do
+
+  end
 end

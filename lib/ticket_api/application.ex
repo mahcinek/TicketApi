@@ -11,10 +11,10 @@ defmodule TicketApi.Application do
       # Start the Ecto repository
       TicketApi.Repo,
       # Start the endpoint when the application starts
-      TicketApiWeb.Endpoint,
+      TicketApiWeb.Endpoint
       # Starts a worker by calling: TicketApi.Worker.start_link(arg)
       # {TicketApi.Worker, arg},
-      {Rihanna.Supervisor, [postgrex: TicketApi.Repo.config()]}
+      # {Rihanna.Supervisor, [postgrex: TicketApi.Repo.config()]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

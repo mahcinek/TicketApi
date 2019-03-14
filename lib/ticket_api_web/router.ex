@@ -12,7 +12,7 @@ defmodule TicketApiWeb.Router do
     patch "/users", UserController, :update
     put "/users", UserController, :update
     resources "/tickets", TicketController, only: [:index, :create, :show, :update]
-    post "/payments", PaymentController, only: [:index, :show, :create]
+    resources "/payments", PaymentController, only: [:index, :show, :create]
   end
 
   scope "/api/v1", TicketApiWeb do
